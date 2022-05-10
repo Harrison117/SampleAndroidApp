@@ -11,6 +11,10 @@ class TodoViewModel : ViewModel() {
     val todoList: LiveData<MutableList<TodoItem>> get() = _todoList
 
     init {
+        initializeTodoList()
+    }
+
+    private fun initializeTodoList() {
         for (i in 1..5) _todoList.value?.add(TodoItem("todo$i"))
     }
 

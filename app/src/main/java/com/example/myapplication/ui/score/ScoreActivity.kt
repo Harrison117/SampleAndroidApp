@@ -9,7 +9,12 @@ import androidx.lifecycle.Observer
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityScoreBinding
 import com.example.myapplication.ui.score.fragments.ResetDialogConfirmFragment
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import timber.log.Timber
+import kotlin.coroutines.coroutineContext
 
 class ScoreActivity : AppCompatActivity(), View.OnClickListener {
     private val TAG = "ScoreActivity"
@@ -50,6 +55,12 @@ class ScoreActivity : AppCompatActivity(), View.OnClickListener {
 
 
         Timber.tag(TAG).i("onCreate() is called")
+    }
+
+    fun coroutinePractice() {
+        CoroutineScope(Dispatchers.IO).launch {
+
+        }
     }
 
     fun initUIListeners(){

@@ -13,6 +13,7 @@ import com.example.myapplication.databinding.ActivityTodoBinding
 import com.example.myapplication.ui.main.MainViewModel
 import com.example.myapplication.ui.todo.adapters.TodoAdapter
 import com.example.myapplication.ui.todo.model.TodoItem
+import timber.log.Timber
 
 class TodoActivity : AppCompatActivity() {
     private val TAG = "TodoActivity"
@@ -33,13 +34,17 @@ class TodoActivity : AppCompatActivity() {
 
                 viewModel.todoList.value?.add(
                     TodoItem(binding.addTodoTextBox.text.toString()))
+                binding.addTodoTextBox.text.clear()
+
+                Timber.tag(TAG).i(viewModel.todoList.value.toString())
             }
         }
 
-        todoRecyclerView = binding.todoRecyclerView
-        val sampleTodoList = viewModel.todoList
+        val sampleTodoList = viewModel.todoList.value
+        val adapter = TodoAdapter(sampleTodoList!!)
 
-        todoRecyclerView.adapter = sampleTodoList.value?.let { TodoAdapter(it) }
+        todoRecyclerView = binding.todoRecyclerView
+        todoRecyclerView.adapter = adapter
         todoRecyclerView.layoutManager = LinearLayoutManager(this)
         todoRecyclerView.setHasFixedSize(true)
 
@@ -47,8 +52,15 @@ class TodoActivity : AppCompatActivity() {
         val todoObserver =
             Observer<MutableList<TodoItem>> { t ->
                 if (t != null) {
-                    (todoRecyclerView.adapter as TodoAdapter?)?.updateTodoList(t)
+                    adapter.updateTodoList(t)
                 }
+            }.also {
+                viewModel.todoList.observe(this, it)
             }
+    }
+
+    override fun onDestroy() {
+        todoRecyclerView.adapter = null
+        super.onDestroy()
     }
 }

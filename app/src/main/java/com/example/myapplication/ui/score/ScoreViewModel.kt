@@ -3,8 +3,17 @@ package com.example.myapplication.ui.score
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 
 class ScoreViewModel: ViewModel() {
+
+    init {
+        viewModelScope.launch {
+
+        }
+    }
+
     private val _scoreTeamA: MutableLiveData<Int> = MutableLiveData<Int>(3)
     val scoreTeamA: LiveData<Int> get() = _scoreTeamA
 
