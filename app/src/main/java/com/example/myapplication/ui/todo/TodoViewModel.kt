@@ -24,6 +24,7 @@ class TodoViewModel : ViewModel() {
                 id = i,
                 description = "todo$i",
                 author = "USER",
+                // TODO reformat date provider
                 date = SimpleDateFormat("EEE, MMM d").format(Date())
             )
         )

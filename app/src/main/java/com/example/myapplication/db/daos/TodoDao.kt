@@ -14,7 +14,7 @@ interface TodoDao {
     @Delete
     fun deleteTodo(todo: TodoEntity)
 
-    @Delete
+    @Query("DELETE FROM todos")
     fun deleteAll()
 
     @Query("SELECT * FROM todos")

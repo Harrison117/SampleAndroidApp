@@ -15,6 +15,7 @@ import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.ui.score.ScoreActivity
 import com.example.myapplication.ui.todo.TodoActivity
 import com.example.myapplication.ui.todo.model.TodoItem
+import com.example.myapplication.ui.wordbank.WordBankActivity
 import timber.log.Timber
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
@@ -34,6 +35,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         binding.leftButton.setOnClickListener(this)
         binding.centerButton.setOnClickListener(this)
+        binding.rightButton.setOnClickListener(this)
 
         binding.spinner.adapter = ArrayAdapter(
             this,
@@ -125,6 +127,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
             binding.centerButton.id -> {
                 startActivity(Intent(this, ScoreActivity::class.java))
+            }
+
+            binding.rightButton.id -> {
+                startActivity(Intent(this, WordBankActivity::class.java))
             }
 
             else -> return

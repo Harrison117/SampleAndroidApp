@@ -23,7 +23,6 @@ class TodoActivity : AppCompatActivity() {
     private val viewModel: TodoViewModel by viewModels()
     private lateinit var _binding: ActivityTodoBinding
     private val binding get() = _binding
-//    private lateinit var todoRecyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +39,7 @@ class TodoActivity : AppCompatActivity() {
                     id = Random.nextInt(),
                     description = binding.addTodoTextBox.text.toString(),
                     author = "curr",
+                    // TODO reformat date provider
                     date = SimpleDateFormat("EEE, MMM d").format(Date())
                 )
                 viewModel.addTodo(newTodo)

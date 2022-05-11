@@ -9,10 +9,17 @@ import androidx.room.PrimaryKey
     tableName = "todos",
     indices = [Index(value = ["author", "date_created"])])
 data class TodoEntity (
-    @PrimaryKey(autoGenerate = true)         val id: Int,
-    @ColumnInfo(name = TODO_DESCRIPTION)     val description: String,
-    @ColumnInfo(name = TODO_AUTHOR)          val author: String,
-    @ColumnInfo(name = TODO_DATE_CREATED)    val dateCreated: String,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo
+        val id: Int,
+
+    @ColumnInfo(name = TODO_DESCRIPTION)
+        val description: String,
+
+    @ColumnInfo(name = TODO_AUTHOR)
+        val author: String,
+
+    @ColumnInfo(name = TODO_DATE_CREATED)
+        val dateCreated: String,
 
 ) {
     companion object {
