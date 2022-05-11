@@ -8,12 +8,14 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
-import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.databinding.ActivityTodoBinding
-import com.example.myapplication.ui.main.MainViewModel
 import com.example.myapplication.ui.todo.adapters.TodoAdapter
 import com.example.myapplication.ui.todo.model.TodoItem
 import timber.log.Timber
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.random.Random
 
 class TodoActivity : AppCompatActivity() {
     private val TAG = "TodoActivity"
@@ -21,46 +23,49 @@ class TodoActivity : AppCompatActivity() {
     private val viewModel: TodoViewModel by viewModels()
     private lateinit var _binding: ActivityTodoBinding
     private val binding get() = _binding
-    private lateinit var todoRecyclerView: RecyclerView
+//    private lateinit var todoRecyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _binding = DataBindingUtil.setContentView(this, R.layout.activity_todo)
+        _binding = DataBindingUtil.setContentView(
+            this,
+            R.layout.activity_todo)
         binding.lifecycleOwner = this
 
         binding.addTodoButton.setOnClickListener {
-            if (binding.addTodoTextBox.text.isNotBlank()
-                or binding.addTodoTextBox.text.isNotEmpty()) {
-
-                viewModel.todoList.value?.add(
-                    TodoItem(binding.addTodoTextBox.text.toString()))
+            if (binding.addTodoTextBox.text.isNotBlank() or
+                binding.addTodoTextBox.text.isNotEmpty()
+            ) {
+                val newTodo = TodoItem(
+                    id = Random.nextInt(),
+                    description = binding.addTodoTextBox.text.toString(),
+                    author = "curr",
+                    date = SimpleDateFormat("EEE, MMM d").format(Date())
+                )
+                viewModel.addTodo(newTodo)
                 binding.addTodoTextBox.text.clear()
-
-                Timber.tag(TAG).i(viewModel.todoList.value.toString())
+            } else {
+                // TODO: Snackbar("ENTER A TODO ITEM")
             }
         }
 
-        val sampleTodoList = viewModel.todoList.value
-        val adapter = TodoAdapter(sampleTodoList!!)
+        val adapter = TodoAdapter(viewModel.todoListLiveData.value as ArrayList)
+        binding.todoRecyclerView.adapter = adapter
+        binding.todoRecyclerView.layoutManager = LinearLayoutManager(this)
+        binding.todoRecyclerView.setHasFixedSize(true)
 
-        todoRecyclerView = binding.todoRecyclerView
-        todoRecyclerView.adapter = adapter
-        todoRecyclerView.layoutManager = LinearLayoutManager(this)
-        todoRecyclerView.setHasFixedSize(true)
-
-
-        val todoObserver =
-            Observer<MutableList<TodoItem>> { t ->
-                if (t != null) {
-                    adapter.updateTodoList(t)
-                }
-            }.also {
-                viewModel.todoList.observe(this, it)
+        Observer<List<TodoItem>> { t ->
+            if (t != null) {
+                Timber.tag(TAG).i(t.toString())
+                adapter.updateTodoList(t)
             }
+        }.also {
+            viewModel.todoListLiveData.observe(this, it)
+        }
     }
 
     override fun onDestroy() {
-        todoRecyclerView.adapter = null
+        binding.todoRecyclerView.adapter = null
         super.onDestroy()
     }
 }
