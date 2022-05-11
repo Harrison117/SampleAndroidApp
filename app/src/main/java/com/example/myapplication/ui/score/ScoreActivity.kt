@@ -29,27 +29,20 @@ class ScoreActivity : AppCompatActivity(), View.OnClickListener {
         _binding = DataBindingUtil.setContentView(this, R.layout.activity_score)
         binding.lifecycleOwner = this
 
-        binding.teamAScore.text = viewModel.scoreTeamA.toString()
-        binding.teamBScore.text = viewModel.scoreTeamB.toString()
+//        binding.teamAScore.text = viewModel.scoreTeamA.toString()
+//        binding.teamBScore.text = viewModel.scoreTeamB.toString()
 
-        val teamAScoreObserver = Observer<Int> { newScore ->
+        Observer<Int> { newScore ->
             binding.teamAScore.text = newScore.toString()
         }.also {
             viewModel.scoreTeamA.observe(this, it)
         }
 
-//        viewModel.scoreTeamA.observe(this){ newScore ->
-//            if (newScore != null)
-//            binding.teamAScore.text = newScore.toString()
-//            else binding.teamAScore.text = "0"
-//        }
-
-        val teamBScoreObserver = Observer<Int> { newScore ->
+        Observer<Int> { newScore ->
             binding.teamBScore.text = newScore.toString()
         }.also {
             viewModel.scoreTeamB.observe(this, it)
         }
-
 
         initUIListeners()
 
@@ -63,24 +56,51 @@ class ScoreActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    fun initUIListeners(){
-        binding.plus3AButton.setOnClickListener { viewModel.teamAPlus(3) }
-        binding.plus2AButton.setOnClickListener { viewModel.teamAPlus(2) }
-        binding.freeThrowAButton.setOnClickListener { viewModel.teamAPlus(1) }
+    private fun initUIListeners(){
+        binding.plus3AButton.setOnClickListener(this)
+        binding.plus2AButton.setOnClickListener(this)
+        binding.freeThrowAButton.setOnClickListener(this)
 
-        binding.plus3BButton.setOnClickListener { viewModel.teamBPlus(3) }
-        binding.plus2BButton.setOnClickListener { viewModel.teamBPlus(2) }
-        binding.freeThrowBButton.setOnClickListener { viewModel.teamBPlus(1) }
+        binding.plus3BButton.setOnClickListener(this)
+        binding.plus2BButton.setOnClickListener(this)
+        binding.freeThrowBButton.setOnClickListener(this)
 
-        binding.resetButton.setOnClickListener {
-            val reset = ResetDialogConfirmFragment()
-            reset.show(supportFragmentManager, "reset")
-        }
+        binding.resetButton.setOnClickListener(this)
     }
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
-            binding.plus3AButton.id -> viewModel.teamAPlus(3)
+            binding.plus3AButton.id -> {
+                viewModel.teamAPlus(3)
+            }
+
+            binding.plus2AButton.id -> {
+                viewModel.teamAPlus(2)
+            }
+
+            binding.freeThrowAButton.id -> {
+                viewModel.teamAPlus(1)
+            }
+
+            binding.plus3BButton.id -> {
+                viewModel.teamBPlus(3)
+            }
+
+            binding.plus2BButton.id -> {
+                viewModel.teamBPlus(2)
+            }
+
+            binding.freeThrowBButton.id -> {
+                viewModel.teamBPlus(1)
+            }
+
+            binding.resetButton.id -> {
+                val reset = ResetDialogConfirmFragment()
+                reset.show(supportFragmentManager, "reset")
+            }
+
+            else -> return
+
         }
     }
 }
