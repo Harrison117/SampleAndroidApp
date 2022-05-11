@@ -14,13 +14,11 @@ class ScoreViewModel: ViewModel() {
         }
     }
 
-    private val _scoreTeamA: MutableLiveData<Int> = MutableLiveData<Int>(3)
+    private val _scoreTeamA: MutableLiveData<Int> = MutableLiveData<Int>(0)
     val scoreTeamA: LiveData<Int> get() = _scoreTeamA
 
     private val _scoreTeamB: MutableLiveData<Int> = MutableLiveData<Int>(0)
     val scoreTeamB: LiveData<Int> get() = _scoreTeamB
-
-    val string123: MutableLiveData<String> = MutableLiveData("string")
 
     fun teamAPlus(points: Int) {
         _scoreTeamA.value = (_scoreTeamA.value)?.plus(points)

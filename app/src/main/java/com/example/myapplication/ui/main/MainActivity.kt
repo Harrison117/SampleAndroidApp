@@ -17,7 +17,7 @@ import com.example.myapplication.ui.todo.TodoActivity
 import com.example.myapplication.ui.todo.model.TodoItem
 import timber.log.Timber
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), View.OnClickListener {
     private val TAG = "MainActivity"
 
     private val viewModel: MainViewModel by viewModels()
@@ -32,13 +32,8 @@ class MainActivity : AppCompatActivity() {
         _binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this
 
-        binding.leftButton.setOnClickListener {
-            startActivity(Intent(this, TodoActivity::class.java))
-        }
-
-        binding.centerButton.setOnClickListener {
-            startActivity(Intent(this, ScoreActivity::class.java))
-        }
+        binding.leftButton.setOnClickListener(this)
+        binding.centerButton.setOnClickListener(this)
 
         binding.spinner.adapter = ArrayAdapter(
             this,
@@ -89,16 +84,6 @@ class MainActivity : AppCompatActivity() {
 
         Timber.tag(TAG).i("onCreate() is called")
     }
-//
-//    fun showButton(viewParent: LinearLayoutCompat, viewId: Int) {
-//        for (child in viewparent) {
-//            if (child.id == viewId){
-//                isvisible = View.VISIBILE
-//            } else {
-//                isvisibile = View.INVISIBLE
-//            }
-//        }
-//    }
 
     override fun onStart() {
         super.onStart()
@@ -127,5 +112,22 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
 
         Timber.tag(TAG).i("onDestroy() is called")
+    }
+
+    override fun onClick(p0: View?) {
+        Timber.tag(TAG).i(p0?.id.toString())
+
+        Timber.tag(TAG).i("In!")
+        when(p0?.id) {
+            binding.leftButton.id -> {
+                startActivity(Intent(this, TodoActivity::class.java))
+            }
+
+            binding.centerButton.id -> {
+                startActivity(Intent(this, ScoreActivity::class.java))
+            }
+
+            else -> return
+        }
     }
 }

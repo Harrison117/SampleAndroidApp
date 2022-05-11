@@ -25,5 +25,6 @@
     <string name="add">Add</string>
     <string name="to_do_list">To-Do List</string>
     <string name="addTodoHint">eg. buy eggs, sweep, etc.</string>
+    <string name="choose">Choose Button Visibility</string>
 
 </resources>
